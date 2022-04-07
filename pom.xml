@@ -88,17 +88,17 @@
         <dependency>
             <groupId>org.eclipse.jetty.websocket</groupId>
             <artifactId>websocket-api</artifactId>
-            <version>9.4.45.v20220203</version>
+            <version>9.4.43.v20210629</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty.websocket</groupId>
             <artifactId>websocket-servlet</artifactId>
-            <version>9.4.45.v20220203</version>
+            <version>9.4.43.v20210629</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty.websocket</groupId>
             <artifactId>websocket-server</artifactId>
-            <version>9.4.45.v20220203</version>
+            <version>9.4.43.v20210629</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
@@ -108,7 +108,7 @@
         <dependency>
             <groupId>org.eclipse.jetty.websocket</groupId>
             <artifactId>websocket-client</artifactId>
-            <version>9.4.45.v20220203</version>
+            <version>9.4.43.v20210629</version>
             <type>jar</type>
         </dependency>
         <dependency>
