@@ -1528,10 +1528,20 @@ public class PelionProcessor extends HttpProcessor implements Runnable, PelionPr
         if (this.longPollEnabled() == true) {
             this.startDeviceDiscovery();
         }
+        else {
+            this.errorLogger().warning("PelionProcessor: Postponing Device Discovery (websocket/webhook)... OK");
+        }
+    }
+    
+    public void startMonitoring() {
+        if (this.webSocketEnabled() == true) {
+            this.m_websocket_processor.startMonitoring();
+        }
     }
     
     // start device discovery for device shadow setup
-    private void startDeviceDiscovery() {
+    public void startDeviceDiscovery() {
+        this.errorLogger().warning("PelionProcessor: Starting Device Discovery...");
         this.run();
     }
     

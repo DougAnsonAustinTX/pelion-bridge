@@ -104,6 +104,7 @@ public class ShadowDeviceThreadDispatcher extends BaseClass implements Runnable 
         
         // DEBUG
         this.errorLogger().warning("ShadowDeviceThreadDispatcher: Existing device discovery is COMPLETE");
+        this.m_pelion_processor.startMonitoring();
     }
     
     // dispatch of device shadow setup in a single group

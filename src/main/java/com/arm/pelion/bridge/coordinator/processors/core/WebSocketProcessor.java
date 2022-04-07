@@ -46,6 +46,8 @@ public class WebSocketProcessor extends Thread implements WebSocketListener {
     private String m_auth = null;
     private WebSocketClient m_ws = null;
     private Session m_session = null;
+    private boolean m_discovered = false;
+    private boolean m_started = false;
 
     // default constructor
     public WebSocketProcessor(PelionProcessor pelion_processor) {
@@ -55,6 +57,8 @@ public class WebSocketProcessor extends Thread implements WebSocketListener {
         this.m_uri = this.initWebSocketURI();
         this.m_auth = this.initWebSocketAuth();
         this.configurePelionForWebSockets();
+        this.m_discovered = false;
+        this.m_started = false;
     }
     
     // direct Pelion to use WebSockets
@@ -149,6 +153,8 @@ public class WebSocketProcessor extends Thread implements WebSocketListener {
         }
         this.m_session = null;
         this.m_ws = null;
+        this.m_discovered = false;
+        this.m_started = false;
     }
 
     // initialize the websocket
@@ -254,9 +260,19 @@ public class WebSocketProcessor extends Thread implements WebSocketListener {
         this.m_session = null;
         this.m_ws = null;
         this.m_running = false;
+        this.m_discovered = false;
+        this.m_started = false;
        
         // notify PelionProcessor that the websocket needs reconnecting...
         this.m_pelion_processor.reconnectWebsocket();
+    }
+    
+    public void startMonitoring() {
+        if (this.m_started == false) {
+            this.m_started = true;
+            this.errorLogger().warning("WebSocketProcessor: Started monitoring for events/observations/replies...");
+            this.start();
+        }
     }
 
     @Override
@@ -270,9 +286,19 @@ public class WebSocketProcessor extends Thread implements WebSocketListener {
             
             // set the timeout...
             this.m_ws.setConnectTimeout(WEBSOCKET_TIMEOUT_MS);
+            this.m_ws.setMaxIdleTimeout(WEBSOCKET_TIMEOUT_MS);
+            this.m_ws.setStopTimeout(WEBSOCKET_TIMEOUT_MS);
             
-            // start our thread...
-            this.start();
+            // perform device discovery if needed 
+            if (this.m_discovered == false) {
+                this.m_discovered = true;
+                this.errorLogger().warning("WebSocketProcessor: Starting device discovery now that we are CONNECTED...");
+                this.m_pelion_processor.startDeviceDiscovery();
+            }
+            else {
+                // already discovered... just start if not already
+                this.startMonitoring();
+            }
         }
         else {
             // unable to connect
